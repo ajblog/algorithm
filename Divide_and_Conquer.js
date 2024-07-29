@@ -149,4 +149,43 @@ function getKthSmallest(arr, k) {
   return quickSelect(arr, 0, arr.length - 1, k - 1);
 }
 
-console.log(getKthSmallest([3, 2, -10, 1], 3));
+// console.log(getKthSmallest([3, 2, -10, 1], 3));
+
+// Question
+//given an array of integers, find the number of sequesnces with total sum of each less than "t"
+//Remember to check the sliding window method!!!
+
+function crossCountSequences(arr, mid, t) {
+  let i = mid - 1;
+  let j = mid;
+  let count = 0;
+  let sum = arr[i] + arr[j];
+  while (i >= 0 && j < arr.length) {
+    if (sum < t) {
+      count += 1;
+    }
+    if (arr[i - 1] < arr[j + 1]) {
+      i--;
+      sum += arr[i];
+    } else {
+      j++;
+      sum += arr[j];
+    }
+  }
+  return count;
+}
+
+function countSmallerThanTSequences(arr, t) {
+  if (arr.length === 0) return;
+  if (arr.length === 1) {
+    if (arr[0] < t) return 1;
+    else return 0;
+  }
+  let mid = Math.floor(arr.length / 2);
+  let left = countSmallerThanTSequences(arr.slice(0, mid), t);
+  let right = countSmallerThanTSequences(arr.slice(mid), t);
+  let crossCount = crossCountSequences(arr, mid, t);
+  return left + right + crossCount;
+}
+
+console.log(countSequences([5, -1, 3, 4, -1], 4));
