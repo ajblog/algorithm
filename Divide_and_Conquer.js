@@ -188,4 +188,48 @@ function countSmallerThanTSequences(arr, t) {
   return left + right + crossCount;
 }
 
-console.log(countSequences([5, -1, 3, 4, -1], 4));
+// You are given an array of integers representing the stock prices on different days.
+//  Write a function to find the maximum profit you can achieve by buying and selling the stock.
+//  You are allowed to complete at most one transaction (i.e., buy one and sell one share of the stock),
+// but you must buy before you sell. Use a divide and conquer approach to solve this problem.
+
+// Example:
+// makefile
+// Copy code
+// Input: prices = [7, 1, 5, 3, 6, 4]
+// Output: 5
+
+// Input: prices = [7, 6, 4, 3, 1]
+// Output: 0
+
+function findMaxProfitHelper(arr, mid) {
+  let minPrice = Infinity;
+  for (let i = 0; i < mid; i++) {
+    if (arr[i] <= minPrice) minPrice = arr[i];
+  }
+  let maxPrice = -Infinity;
+  for (let i = mid; i < arr.length; i++) {
+    if (arr[i] >= maxPrice) maxPrice = arr[i];
+  }
+  return maxPrice - minPrice;
+}
+
+function findMaxProfit(arr) {
+  let profit = 0;
+  if (arr.length === 0 || arr.length === 1) {
+    return 0;
+  } else if (arr.length === 2) {
+    profit = arr[1] - arr[0];
+  }
+  let mid = Math.floor(arr.length / 2);
+  let leftMax = findMaxProfit(arr.slice(0, mid));
+  let rightMax = findMaxProfit(arr.slice(mid));
+  let crossProfit = findMaxProfitHelper(arr, mid);
+
+  profit = Math.max(leftMax, rightMax, crossProfit);
+
+  if (profit <= 0) {
+    return 0;
+  }
+  return profit;
+}
