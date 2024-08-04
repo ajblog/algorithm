@@ -158,3 +158,36 @@ function largestPausedNumber(n) {
 }
 
 console.log(largestPausedNumber(10));
+
+// Allen has a LOT of money. He has n
+//  dollars in the bank. For security reasons, he wants to withdraw it in cash (we will not disclose the reasons here). The denominations for dollar bills are 1
+// , 5
+// , 10
+// , 20
+// , 100
+// . What is the minimum number of bills Allen could receive after withdrawing his entire balance?
+
+// Input
+// The first and only line of input contains a single integer n
+//  (1≤n≤109
+// ).
+
+// Output
+// Output the minimum number of bills that Allen could receive
+function hitTheLottery(money) {
+  const billsArray = [1, 5, 10, 20, 100];
+  let numberOfBills = 0;
+  let remainedMoney = money;
+  let currentBillIndex = billsArray.length - 1;
+  while (remainedMoney !== 0) {
+    if (remainedMoney >= billsArray[currentBillIndex]) {
+      numberOfBills += 1;
+      remainedMoney -= billsArray[currentBillIndex];
+    } else {
+      currentBillIndex -= 1;
+    }
+  }
+  return numberOfBills;
+}
+
+console.log(hitTheLottery(43));
