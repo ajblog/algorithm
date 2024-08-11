@@ -73,3 +73,46 @@ function lengthOfLIS(nums) {
 // Example usage
 // const nums = [3, 4, 5, 1, 2, 8];
 // console.log(lengthOfLIS(nums));  // Correct Output: 4
+
+// You are given a 2D grid grid of size n x m, where each cell contains a positive integer. Your task is to find the maximum path sum from the top-left corner (cell (0,0)) to the bottom-right corner (cell (n-1,m-1)).
+
+// You can only move to the right or down from any given cell.
+
+// Example:
+// plaintext
+// Copy code
+// Input:
+// grid = [
+//     [5, 3, 2, 1],
+//     [1, 7, 1, 2],
+//     [4, 6, 5, 3],
+//     [2, 3, 2, 6]
+// ]
+
+// Explanation:
+// The path with the maximum sum is 5 → 3 → 7 → 6 → 5 → 3 → 6, and the sum is 28.
+
+function findMaxPathSumDP(arr, n, m) {
+  let dp = Array.from({ length: n }, () => Array(m).fill(0));
+
+  dp[0][0] = arr[0][0];
+
+  // Fill the first row
+  for (let j = 1; j < m; j++) {
+    dp[0][j] = dp[0][j - 1] + arr[0][j];
+  }
+
+  // Fill the first column
+  for (let i = 1; i < n; i++) {
+    dp[i][0] = dp[i - 1][0] + arr[i][0];
+  }
+
+  // Fill the rest of the dp array
+  for (let i = 1; i < n; i++) {
+    for (let j = 1; j < m; j++) {
+      dp[i][j] = arr[i][j] + Math.max(dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+
+  return dp;
+}

@@ -157,37 +157,95 @@ function largestPausedNumber(n) {
   return result;
 }
 
-console.log(largestPausedNumber(10));
+// console.log(largestPausedNumber(10));
+// Problem: Weighted Job Scheduling
+// You are given n jobs, where each job has a start time, an end time, and a profit associated with it. You need to schedule the jobs in such a way that you maximize the total profit while ensuring that no two jobs overlap.
 
-// Allen has a LOT of money. He has n
-//  dollars in the bank. For security reasons, he wants to withdraw it in cash (we will not disclose the reasons here). The denominations for dollar bills are 1
-// , 5
-// , 10
-// , 20
-// , 100
-// . What is the minimum number of bills Allen could receive after withdrawing his entire balance?
+// You can either select a job or skip it, but if you select it, you cannot select any other job that overlaps with it.
 
-// Input
-// The first and only line of input contains a single integer n
-//  (1≤n≤109
-// ).
+// Example:
+// plaintext
+// Copy code
+// Input:
+// jobs = [
+// { start: 1, end: 3, profit: 50 },
+// { start: 2, end: 5, profit: 20 },
+// { start: 4, end: 6, profit: 70 },
+// { start: 6, end: 7, profit: 60 },
+// { start: 5, end: 8, profit: 30 },
+// { start: 7, end: 9, profit: 40 }
+// ]
 
-// Output
-// Output the minimum number of bills that Allen could receive
-function hitTheLottery(money) {
-  const billsArray = [1, 5, 10, 20, 100];
-  let numberOfBills = 0;
-  let remainedMoney = money;
-  let currentBillIndex = billsArray.length - 1;
-  while (remainedMoney !== 0) {
-    if (remainedMoney >= billsArray[currentBillIndex]) {
-      numberOfBills += 1;
-      remainedMoney -= billsArray[currentBillIndex];
+// Output:
+// 220
+
+//greedy method can't support the non consecutive job schedulings
+function findOptimumJobsSchedule(jobsArr) {
+  let finalResult = 0;
+  let startTime = 0;
+  let finishTime = 0;
+  jobsArr.sort(
+    (a, b) => b.profit / (b.end - b.start) - a.profit / (a.end - a.start)
+  );
+  startTime = jobsArr[0].start;
+  finishTime = jobsArr[0].end;
+  finalResult += jobsArr[0].profit;
+  jobsArr.forEach((job, index) => {
+    if (index > 0) {
+      if (job.start >= finishTime) {
+        finalResult += job.profit;
+        finishTime = job.end;
+      } else if (job.end <= startTime) {
+        finalResult += job.profit;
+        startTime = job.start;
+      }
+    }
+  });
+  return finalResult;
+}
+console.log(
+  findOptimumJobsSchedule([
+    { start: 1, end: 3, profit: 50 },
+    { start: 2, end: 5, profit: 20 },
+    { start: 4, end: 6, profit: 70 },
+    { start: 6, end: 7, profit: 60 },
+    { start: 5, end: 8, profit: 30 },
+    { start: 7, end: 9, profit: 40 },
+  ])
+);
+
+// Assume you are an awesome parent and want to give your children some cookies. But, you should give each child at most one cookie.
+
+// Each child i has a greed factor g[i], which is the minimum size of a cookie that the child will be content with; and each cookie j has a size s[j]. If s[j] >= g[i], we can assign the cookie j to the child i, and the child i will be content. Your goal is to maximize the number of your content children and output the maximum number.
+
+// Example 1:
+
+// Input: g = [1,2,3], s = [1,1]
+// Output: 1
+// Explanation: You have 3 children and 2 cookies. The greed factors of 3 children are 1, 2, 3.
+// And even though you have 2 cookies, since their size is both 1, you could only make the child whose greed factor is 1 content.
+// You need to output 1.
+// Example 2:
+
+// Input: g = [1,2], s = [1,2,3]
+// Output: 2
+// Explanation: You have 2 children and 3 cookies. The greed factors of 2 children are 1, 2.
+// You have 3 cookies and their sizes are big enough to gratify all of the children,
+// You need to output 2.
+function findContentChildren(g, s) {
+  g.sort((a, b) => a - b);
+  s.sort((a, b) => a - b);
+  let i = 0;
+  let j = 0;
+  while (i <= g.length && j <= s.length) {
+    if (s[j] >= g[i]) {
+      i++;
+      j++;
     } else {
-      currentBillIndex -= 1;
+      j++;
     }
   }
-  return numberOfBills;
+  return i;
 }
 
-console.log(hitTheLottery(43));
+console.log(findContentChildren([1, 2], [1, 10, 2]));
