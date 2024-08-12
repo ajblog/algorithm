@@ -233,34 +233,3 @@ function findMaxProfit(arr) {
   }
   return profit;
 }
-
-// Given an integer array nums, reorder it such that nums[0] < nums[1] > nums[2] < nums[3]....
-
-// You may assume the input array always has a valid answer.
-
-// Example 1:
-
-// Input: nums = [1,5,1,1,6,4]
-// Output: [1,6,1,5,1,4]
-// Explanation: [1,4,1,5,1,6] is also accepted.
-// Example 2:
-
-// Input: nums = [1,3,2,2,3,1]
-// Output: [2,3,1,3,1,2]
-function wiggleSort(nums) {
-  nums.sort((a, b) => a - b);
-  let mid = Math.ceil(nums.length / 2);
-  console.log(mid);
-  let maxHalf = nums.slice(mid);
-  console.log(maxHalf);
-  for (let i = 0; i < nums.length; i++) {
-    let j = maxHalf.indexOf(Math.min(...maxHalf));
-    j += mid;
-    console.log(i, j);
-    [nums[i], nums[j]] = [nums[j], nums[i]];
-  }
-
-  return nums;
-}
-
-console.log(wiggleSort([1, 3, 2, 2, 3, 1]));
