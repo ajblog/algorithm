@@ -114,3 +114,51 @@ MyCalendar.prototype.book = function (start, end) {
 // var param_2 = obj.book(15, 25);
 // var param_3 = obj.book(20, 30);
 // console.log(obj.bookings);
+
+// Given an integer array nums and an integer k,
+//  return true if there are two distinct indices i and j in the array
+// such that nums[i] == nums[j] and abs(i - j) <= k.
+function containsNearbyDuplicate(nums, k) {
+  let indexObj = {};
+  for (let i = 0; i <= nums.length; i++) {
+    if (indexObj.hasOwnProperty(nums[i]) && i - indexObj[nums[i]] <= k) {
+      return true;
+    }
+    indexObj[nums[i]] = i;
+  }
+  return false;
+}
+
+// console.log(containsNearbyDuplicate([1, 2, 1, 1, 2, 3], 2));
+
+// You are given an integer array nums consisting of n elements, and an integer k.
+
+// Find a contiguous subarray whose length is equal to k that has the maximum average value and return this value.
+// Any answer with a calculation error less than 10-5 will be accepted.
+
+// Example 1:
+
+// Input: nums = [1,12,-5,-6,50,3], k = 4
+// Output: 12.75000
+// Explanation: Maximum average is (12 - 5 - 6 + 50) / 4 = 51 / 4 = 12.75
+function findMaxAverage(nums, k) {
+  let curSum = 0;
+  let maxSum = -Infinity;
+
+  for (let i = 0; i < k; i++) {
+    curSum += nums[i];
+  }
+
+  maxSum = curSum;
+
+  let i = 0;
+  while (i < nums.length - k) {
+    curSum = curSum + nums[i + k] - nums[i];
+    maxSum = Math.max(maxSum, curSum);
+    i += 1;
+  }
+
+  return maxSum / k;
+}
+
+// console.log(findMaxAverage([5], 1));
