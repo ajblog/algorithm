@@ -185,3 +185,42 @@ function removeDuplicates(nums) {
 }
 
 // console.log(removeDuplicates([1, 1, 2, 3, 4, 4, 6]));
+
+// An ugly number is a positive integer whose prime factors are limited to 2, 3, and 5.
+// Given an integer n, return true if n is an ugly number.
+function isUgly(n) {
+  if (n <= 0) {
+    return false;
+  }
+  while (n % 2 === 0) {
+    n /= 2;
+  }
+  while (n % 3 === 0) {
+    n /= 3;
+  }
+  while (n % 5 === 0) {
+    n /= 5;
+  }
+  return n === 1;
+}
+// An ugly number is a positive integer whose prime factors are limited to 2, 3, and 5.
+
+// Given an integer n, return the nth ugly number.
+var nthUglyNumber = function (n) {
+  let uglyArr = [];
+  uglyArr.push(1);
+  let p = 0;
+  let q = 0;
+  let r = 0;
+  for (let i = 0; i < n; i++) {
+    let two = uglyArr[p] * 2;
+    let three = uglyArr[q] * 3;
+    let five = uglyArr[r] * 5;
+    let min = Math.min(two, three, five);
+    uglyArr.push(min);
+    if (min === two) p++;
+    if (min === three) q++;
+    if (min === five) r++;
+  }
+  return uglyArr[n - 1];
+};
