@@ -167,10 +167,32 @@ function maxPoints(points) {
   return Math.max(...dp[points.length - 1]);
 }
 
-console.log(
-  maxPoints([
-    [5, 2, 1, 2],
-    [2, 1, 5, 2],
-    [5, 5, 5, 0],
-  ])
-);
+// console.log(
+//   maxPoints([
+//     [5, 2, 1, 2],
+//     [2, 1, 5, 2],
+//     [5, 5, 5, 0],
+//   ])
+// );
+
+// There is only one character 'A' on the screen of a notepad. You can perform one of two operations on this notepad for each step:
+
+// Copy All: You can copy all the characters present on the screen (a partial copy is not allowed).
+// Paste: You can paste the characters which are copied last time.
+// Given an integer n, return the minimum number of operations to get the character 'A' exactly n times on the screen.
+function minSteps(n) {
+  let dp = Array(n + 1).fill(0); // Initialize dp array
+
+  for (let i = 2; i <= n; i++) {
+    dp[i] = i; // Start with the worst case where all steps are paste operations
+    for (let j = Math.floor(i / 2); j > 1; j--) {
+      if (i % j === 0) {
+        // If j is a divisor of i
+        dp[i] = dp[j] + i / j; // Update dp[i] with the minimum number of operations
+        break; // Exit the loop as we found the largest divisor
+      }
+    }
+  }
+
+  return dp[n];
+}

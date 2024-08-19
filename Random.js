@@ -224,3 +224,5 @@ var nthUglyNumber = function (n) {
   }
   return uglyArr[n - 1];
 };
+
+console.log(minSteps(6));
