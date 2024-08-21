@@ -225,4 +225,60 @@ var nthUglyNumber = function (n) {
   return uglyArr[n - 1];
 };
 
-console.log(minSteps(6));
+// console.log(minSteps(6));
+// Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+
+// You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+// You can return the answer in any order.
+
+function twoSum(nums, target) {
+  const indexMap = new Map(); // Initialize the hash map
+
+  for (let i = 0; i < nums.length; i++) {
+    const complement = target - nums[i];
+
+    // Check if the complement exists in the hash map
+    if (indexMap.has(complement)) {
+      return [indexMap.get(complement), i];
+    }
+
+    // Store the index of the current element
+    indexMap.set(nums[i], i);
+  }
+
+  // If no solution is found (though the problem guarantees exactly one solution)
+  throw new Error("No two sum solution");
+}
+
+// console.log(twoSum([3, 2, 4], 6));
+
+// Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+
+// Example 1:
+
+// Input: nums = [1,1,1,2,2,3], k = 2
+// Output: [1,2]
+function topKFrequent(nums, k) {
+  let freqMap = new Map();
+  for (let num of nums) {
+    freqMap.set(num, (freqMap.get(num) || 0) + 1);
+  }
+  let found = 0;
+  let foundArr = [];
+  while (found < k) {
+    let max = 0;
+    let maxKey = 0;
+    for (let [key, value] of freqMap) {
+      if (value > max) {
+        max = value;
+        maxKey = key;
+      }
+    }
+    foundArr.push(maxKey);
+    freqMap.delete(maxKey);
+    found++;
+  }
+  return foundArr;
+}
+console.log(topKFrequent([1, 1, 1, 3, 2, 2], 2));
