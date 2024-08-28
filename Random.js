@@ -281,4 +281,93 @@ function topKFrequent(nums, k) {
   }
   return foundArr;
 }
-console.log(topKFrequent([1, 1, 1, 3, 2, 2], 2));
+// console.log(topKFrequent([1, 1, 1, 3, 2, 2], 2));
+// Given two integers dividend and divisor, divide two integers without using multiplication, division, and mod operator.
+
+// The integer division should truncate toward zero, which means losing its fractional part. For example, 8.345 would be truncated to 8, and -2.7335 would be truncated to -2.
+
+// Return the quotient after dividing dividend by divisor.
+
+// Note: Assume we are dealing with an environment that could only store integers within the 32-bit signed integer range: [−231, 231 − 1]. For this problem, if the quotient is strictly greater than 231 - 1, then return 231 - 1, and if the quotient is strictly less than -231, then return -231.
+
+var divide = function (dividend, divisor) {
+  if (dividend === 0) return 0;
+  if (divisor === 1) return dividend;
+  let abs_dividend = Math.abs(dividend);
+  let abs_divisor = Math.abs(divisor);
+  let r = 0;
+  while (abs_dividend >= abs_divisor) {
+    abs_dividend -= abs_divisor;
+    r++;
+  }
+  if (
+    ((dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0)) &&
+    r != 0
+  )
+    r = -r;
+  return r;
+};
+
+// console.log(divide(-2147483648, -1));
+// Given an integer array nums and an integer val, remove all occurrences of val in nums in-place. The order of the elements may be changed. Then return the number of elements in nums which are not equal to val.
+
+// Consider the number of elements in nums which are not equal to val be k, to get accepted, you need to do the following things:
+
+// Change the array nums such that the first k elements of nums contain the elements which are not equal to val. The remaining elements of nums are not important as well as the size of nums.
+// Return k.
+var removeElement = function (nums, val) {
+  let result = [];
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] !== val) {
+      result.push(nums[i]);
+    } else {
+      nums[i] = null;
+    }
+  }
+  return result;
+};
+// console.log(removeElement([3, 2, 2, 3], 3));
+
+// Given two strings needle and haystack, return the index of the first occurrence of needle in haystack,
+// or -1 if needle is not part of haystack.
+
+// Example 1:
+
+// Input: haystack = "sadbutsad", needle = "sad"
+// Output: 0
+// Explanation: "sad" occurs at index 0 and 6.
+// The first occurrence is at index 0, so we return 0.
+var strStr = function (haystack, needle) {
+  let result = -1;
+  if (needle === "") result = 0;
+  for (let i = 0; i < haystack.length; i++) {
+    if (haystack.slice(i, i + needle.length) === needle) {
+      result = i;
+      break;
+    }
+  }
+  return result;
+};
+
+// Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+
+// An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.Example 1:
+
+// Input: strs = ["eat", "tea", "tan", "ate", "nat", "bat"];
+// Output: [["bat"], ["nat", "tan"], ["ate", "eat", "tea"]];
+var groupAnagrams = function (strs) {
+  function sortString(str) {
+    return str.split("").sort().join("");
+  }
+  let hashedObj = {};
+  strs.forEach((item) => {
+    let sorted = sortString(item);
+    if (hashedObj[sorted]) {
+      hashedObj[sorted].push(item);
+    } else {
+      hashedObj[sorted] = [item];
+    }
+  });
+  return Object.values(hashedObj);
+};
+// console.log(groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]));
