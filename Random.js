@@ -371,3 +371,330 @@ var groupAnagrams = function (strs) {
   return Object.values(hashedObj);
 };
 // console.log(groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]));
+
+// Given an integer array nums, find the
+// subarray
+//  with the largest sum, and return its sum.
+
+// Example 1:
+
+// Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+// Output: 6
+// Explanation: The subarray [4,-1,2,1] has the largest sum 6.
+var maxSubArray = function (nums) {
+  let start = 0;
+  let end = 0;
+  let curSum = nums[0];
+  let newSum = 0;
+  for (let i = 0; i <= nums.length - 1; i++) {
+    newSum += nums[i];
+    if (newSum >= curSum) {
+      curSum = newSum;
+      start = end;
+      end = i;
+    }
+  }
+  if (nums.length === 1) return nums[0];
+  return [...nums].splice(start, end + 1).reduce((a, b) => a + b);
+};
+
+// You are given a 0-indexed 2D matrix grid of size m x n, where (r, c) represents:
+
+// A land cell if grid[r][c] = 0, or
+// A water cell containing grid[r][c] fish, if grid[r][c] > 0.
+// A fisher can start at any water cell (r, c) and can do the following operations any number of times:
+
+// Catch all the fish at cell (r, c), or
+// Move to any adjacent water cell.
+// Return the maximum number of fish the fisher can catch if he chooses his starting cell optimally, or 0 if no water cell exists.
+
+// An adjacent cell of the cell (r, c), is one of the cells (r, c + 1), (r, c - 1), (r + 1, c) or (r - 1, c) if it exists.
+
+// Example 1:
+
+// Input: grid = [[0,2,1,0],[4,0,0,3],[1,0,0,4],[0,3,2,0]]
+// Output: 7
+// Explanation: The fisher can start at cell (1,3) and collect 3 fish, then move to cell (2,3) and collect 4 fish.
+// Example 2:
+var findMaxFish = function (grid) {
+  let m = grid.length;
+  let n = grid[0].length;
+  let dp = Array.from({ length: m }, () => Array(n).fill(0));
+  let visited = Array.from({ length: m }, () => Array(n).fill(false)); // To track visited cells
+
+  function findIslandSum(i, j) {
+    // Boundary check: ensure i and j are within valid bounds and cell is not visited
+    if (i < 0 || j < 0 || i >= m || j >= n || grid[i][j] === 0 || visited[i][j])
+      return 0;
+
+    // Mark the current cell as visited
+    visited[i][j] = true;
+
+    // Sum the current cell value and recursively sum the adjacent cells
+    return (
+      grid[i][j] +
+      findIslandSum(i + 1, j) + // down
+      findIslandSum(i - 1, j) + // up
+      findIslandSum(i, j + 1) + // right
+      findIslandSum(i, j - 1) // left
+    );
+  }
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (grid[i][j] === 0) {
+        dp[i][j] = 0;
+      } else if (
+        (i > 0 && dp[i - 1][j] !== undefined && dp[i - 1][j] !== 0) ||
+        (j > 0 && dp[i][j - 1] !== undefined && dp[i][j - 1] !== 0)
+      ) {
+        dp[i][j] = i > 0 ? dp[i - 1][j] : dp[i][j - 1];
+      } else {
+        dp[i][j] = findIslandSum(i, j);
+      }
+    }
+  }
+  let max = -Infinity;
+  for (let i = 0; i < m; i++) {
+    curMax = Math.max(...dp[i]);
+    if (curMax > max) max = curMax;
+  }
+  return max;
+};
+
+// console.log(
+//   findMaxFish([
+//     [0, 2, 1, 0],
+//     [4, 0, 0, 3],
+//     [1, 0, 0, 4],
+//     [0, 3, 2, 0],
+//   ])
+// );
+
+var getLucky = function (s, k) {
+  let alphMap = {
+    a: 1,
+    b: 2,
+    c: 3,
+    d: 4,
+    e: 5,
+    f: 6,
+    g: 7,
+    h: 8,
+    i: 9,
+    j: 10,
+    k: 11,
+    l: 12,
+    m: 13,
+    n: 14,
+    o: 15,
+    p: 16,
+    q: 17,
+    r: 18,
+    s: 19,
+    t: 20,
+    u: 21,
+    v: 22,
+    w: 23,
+    x: 24,
+    y: 25,
+    z: 26,
+  };
+  s = parseInt(
+    s
+      .split("")
+      .map((char) => alphMap[char])
+      .join("")
+  );
+  let j = s.toString();
+  for (let i = 0; i < k; i++) {
+    j = j
+      .toString()
+      .split("")
+      .reduce((a, b) => parseInt(a) + parseInt(b));
+  }
+  return j;
+};
+
+// There is a city composed of n x n blocks, where each block contains a single building shaped like a vertical square prism. You are given a 0-indexed n x n integer matrix grid where grid[r][c] represents the height of the building located in the block at row r and column c.
+
+// A city's skyline is the outer contour formed by all the building when viewing the side of the city from a distance. The skyline from each cardinal direction north, east, south, and west may be different.
+
+// We are allowed to increase the height of any number of buildings by any amount (the amount can be different per building). The height of a 0-height building can also be increased. However, increasing the height of a building should not affect the city's skyline from any cardinal direction.
+
+// Return the maximum total sum that the height of the buildings can be increased by without changing the city's skyline from any cardinal direction.
+// Input: grid = [[3,0,8,4],[2,4,5,7],[9,2,6,3],[0,3,1,0]]
+// Output: 35
+// Explanation: The building heights are shown in the center of the above image.
+// The skylines when viewed from each cardinal direction are drawn in red.
+// The grid after increasing the height of buildings without affecting skylines is:
+// gridNew = [ [8, 4, 8, 7],
+//             [7, 4, 7, 7],
+//             [9, 4, 8, 7],
+//             [3, 3, 3, 3] ]
+var maxIncreaseKeepingSkyline = function (grid) {
+  let fullSum = 0;
+  function findMaxInRowsAndColumns(matrix) {
+    let n = matrix.length; // Size of the matrix
+    let maxInRows = []; // Array to store maximum values in each row
+    let maxInColumns = []; // Array to store maximum values in each column
+
+    // Initialize maxInColumns with the first row's values
+    for (let col = 0; col < n; col++) {
+      maxInColumns[col] = matrix[0][col];
+    }
+
+    // Loop through each row to find max in rows and update max in columns
+    for (let row = 0; row < n; row++) {
+      let maxInRow = matrix[row][0]; // Start with the first element in the row
+
+      for (let col = 0; col < n; col++) {
+        // Update max in row
+        if (matrix[row][col] > maxInRow) {
+          maxInRow = matrix[row][col];
+        }
+
+        // Update max in column
+        if (matrix[row][col] > maxInColumns[col]) {
+          maxInColumns[col] = matrix[row][col];
+        }
+      }
+
+      // Store the max value for the current row
+      maxInRows.push(maxInRow);
+    }
+
+    return { maxInRows, maxInColumns };
+  }
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      fullSum +=
+        Math.min(
+          findMaxInRowsAndColumns(grid).maxInColumns[j],
+          findMaxInRowsAndColumns(grid).maxInRows[i]
+        ) - grid[i][j];
+      grid[i][j] = Math.min(
+        findMaxInRowsAndColumns(grid).maxInColumns[j],
+        findMaxInRowsAndColumns(grid).maxInRows[i]
+      );
+    }
+  }
+  return fullSum;
+};
+
+// Given an m x n matrix, return all elements of the matrix in spiral order.
+
+// Example 1:
+
+// Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+// Output: [1,2,3,6,9,8,7,4,5]
+var spiralOrder = function (matrix) {
+  let m = matrix.length;
+  let n = matrix[0].length;
+  let result = [];
+  let right = n - 1;
+  let down = m - 1;
+  let left = 0;
+  let up = m - 2;
+  let i = 0;
+  let j = 0;
+  while (result.length < m * n) {
+    while (j <= right) {
+      result.push(matrix[i][j]);
+      j++;
+    }
+    j--;
+    i++;
+    while (i <= down) {
+      result.push(matrix[i][j]);
+      i++;
+    }
+    i--;
+    j--;
+    while (j >= left) {
+      result.push(matrix[i][j]);
+      j--;
+    }
+    j++;
+    i--;
+    while (i >= up) {
+      result.push(matrix[i][j]);
+      i--;
+    }
+    i++;
+    j++;
+    right--;
+    down--;
+    left++;
+    up--;
+  }
+  return result.splice(0, m * n);
+};
+
+console.log(
+  spiralOrder([
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12],
+  ])
+);
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+
+// Given head, the head of a linked list, determine if the linked list has a cycle in it.
+
+// There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+
+// Return true if there is a cycle in the linked list. Otherwise, return false.
+var hasCycle = function (head) {
+  let slow = head;
+  let fast = head;
+  while (fast !== null && fast.next !== null) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow === fast) return true;
+  }
+  return false;
+};
+
+var deleteDuplicates = function (head) {
+  while (head.next !== null) {
+    if (head.val === head.next.val) {
+      head.next = head.next.next;
+    } else {
+      head = head.next;
+    }
+  }
+  return head;
+};
+
+// Given the head of a singly linked list, reverse the list, and return the reversed list.
+var reverseList = function (head) {
+  let prev = null;
+  let current = head;
+
+  while (current !== null) {
+    // Temporarily store the next node
+    let next = current.next;
+
+    // Reverse the current node's pointer
+    current.next = prev;
+
+    // Move pointers one position ahead
+    prev = current;
+    current = next;
+  }
+
+  // `prev` will be the new head of the reversed list
+  return prev;
+};
