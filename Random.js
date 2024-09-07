@@ -630,13 +630,13 @@ var spiralOrder = function (matrix) {
   return result.splice(0, m * n);
 };
 
-console.log(
-  spiralOrder([
-    [1, 2, 3, 4],
-    [5, 6, 7, 8],
-    [9, 10, 11, 12],
-  ])
-);
+// console.log(
+//   spiralOrder([
+//     [1, 2, 3, 4],
+//     [5, 6, 7, 8],
+//     [9, 10, 11, 12],
+//   ])
+// );
 
 /**
  * Definition for singly-linked list.
@@ -698,3 +698,59 @@ var reverseList = function (head) {
   // `prev` will be the new head of the reversed list
   return prev;
 };
+
+// Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
+
+// Example 1:
+
+// Input: nums = [1,2,3,1]
+
+// Output: true
+
+// Explanation:
+
+// The element 1 occurs at the indices 0 and 3.
+var containsDuplicate = function (nums) {
+  let hashMap = new Map();
+  let ans = false;
+  nums.forEach((item) => {
+    if (!hashMap.has(item)) hashMap.set(item, "set");
+    else ans = true;
+    // else return true;
+  });
+  return ans;
+};
+
+// console.log(containsDuplicate([1, 2, 3, 1]));
+// Given an array of positive integers nums and a positive integer target, return the minimal length of a
+// subarray
+//  whose sum is greater than or equal to target. If there is no such subarray, return 0 instead.Example 1:
+//
+// Input: target = 7, nums = [2,3,1,2,4,3]
+// Output: 2
+// Explanation: The subarray [4,3] has the minimal length under the problem constraint.
+var minSubArrayLen = function (target, nums) {
+  let i = 0;
+  let j = 0;
+  curSum = nums[0];
+  let ans = nums.length;
+  let found = false;
+  while (i <= j && j < nums.length) {
+    console.log("ans", i, j, curSum, ans);
+    if (curSum >= target) {
+      if (j - i + 1 <= ans) {
+        ans = j - i + 1;
+        found = true;
+      }
+      curSum -= nums[i];
+      i++;
+    } else {
+      j++;
+      curSum += nums[j];
+    }
+  }
+  if (found) return ans;
+  return 0;
+};
+
+console.log(minSubArrayLen(7, [1, 2, 3, 4, 5]));
