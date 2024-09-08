@@ -752,5 +752,47 @@ var minSubArrayLen = function (target, nums) {
   if (found) return ans;
   return 0;
 };
+// Given the head of a singly linked list and an integer k, split the linked list into k consecutive linked list parts.
 
-console.log(minSubArrayLen(7, [1, 2, 3, 4, 5]));
+// The length of each part should be as equal as possible: no two parts should have a size differing by more than one. This may lead to some parts being null.
+
+// The parts should be in the order of occurrence in the input list, and parts occurring earlier should always have a size greater than or equal to parts occurring later.
+
+// Return an array of the k parts.
+// Input: head = [1,2,3], k = 5
+// Output: [[1],[2],[3],[],[]]
+// Explanation:
+// The first element output[0] has output[0].val = 1, output[0].next = null.
+// The last element output[4] is null, but its string representation as a ListNode is [].
+/**
+ * @param {ListNode} head
+ * @param {number} k
+ * @return {ListNode[]}
+ */
+var splitListToParts = function (head, k) {
+  let nullVisited = false;
+  let n = 0;
+  while (!nullVisited) {
+    if (head.next.value !== null) n++;
+    else nullVisited = true;
+  }
+  nullVisited = false;
+  let counter = 0;
+  let arr = Array.from({ length: n }, () => []);
+  while (!nullVisited) {
+    if (counter <= Math.floor(n / k)) {
+      arr[Math.floor(n / k)][counter] = head;
+      head = head.next;
+      counter++;
+    }
+    if (head.value === null) nullVisited = true;
+  }
+  return arr;
+};
+
+// Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+// Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]
+// Output: 6
+// // Explanation: The above elevation map (black section) is represented by array [0,1,0,2,1,0,1,3,2,1,2,1]. In this case, 6 units of rain water (blue section) are being trapped.
+var trap = function (height) {};
+console.log(trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]));
