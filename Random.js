@@ -790,9 +790,49 @@ var splitListToParts = function (head, k) {
   return arr;
 };
 
-// Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
-// Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]
-// Output: 6
-// // Explanation: The above elevation map (black section) is represented by array [0,1,0,2,1,0,1,3,2,1,2,1]. In this case, 6 units of rain water (blue section) are being trapped.
-var trap = function (height) {};
-console.log(trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]));
+// There is a strange printer with the following two special properties:
+
+// The printer can only print a sequence of the same character each time.
+// At each turn, the printer can print new characters starting from and ending at any place and will cover the original existing characters.
+// Given a string s, return the minimum number of turns the printer needed to print it.
+
+// Example 1:
+
+// Input: s = "aaabbb"
+// Output: 2
+// Explanation: Print "aaa" first and then print "bbb".
+// Example 2:
+
+// Input: s = "aba"
+// Output: 2
+// Explanation: Print "aaa" first and then print "b" from the second place of the string, which will cover the existing character 'a'.
+var strangePrinter = function (s) {
+  const dp = Array.from({ length: s.split("").length }, () => 1);
+  let map = new Map();
+  let strArray = s.split("");
+
+  if (!s.length) return 0;
+  if (s.length === 1) {
+    map.set(strArray[0], 0);
+    return 1;
+  }
+
+  map.set(strArray[0], true);
+  let cur = 0;
+  for (let i = 1; i < strArray.length; i++) {
+    if (strArray[i] === strArray[i - 1] && i > 0) {
+      dp[i] = dp[i - 1];
+    } else {
+      if (!map.has(strArray[i]) || map.get(strArray[i]) < cur) {
+        dp[i] = dp[i - 1] + 1;
+      } else {
+        cur = i;
+        dp[i] = dp[i - 1];
+      }
+    }
+    map.set(strArray[i], i);
+  }
+  return dp[strArray.length - 1];
+};
+
+console.log(strangePrinter("abcabc"));
