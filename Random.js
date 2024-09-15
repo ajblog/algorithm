@@ -835,4 +835,36 @@ var strangePrinter = function (s) {
   return dp[strArray.length - 1];
 };
 
-console.log(strangePrinter("abcabc"));
+// console.log(strangePrinter("abcabc"));
+// Given the string s, return the size of the longest substring containing each vowel an even number of times. That is, 'a', 'e', 'i', 'o', and 'u' must appear an even number of times.
+
+// Example 1:
+
+// Input: s = "eleetminicoworoep"
+// Output: 13
+// Explanation: The longest substring is "leetminicowor" which contains two each of the vowels: e, i and o and zero of the vowels: a and u.
+var findTheLongestSubstring = function (s) {
+  let n = s.length;
+  let mask = 0;
+  let maxLength = 0;
+  let m = new Map();
+  m.set(0, -1);
+
+  for (let i = 0; i < n; i++) {
+    if (s[i] === "a") mask ^= 1 << 0;
+    else if (s[i] === "e") mask ^= 1 << 1;
+    else if (s[i] === "i") mask ^= 1 << 2;
+    else if (s[i] === "o") mask ^= 1 << 3;
+    else if (s[i] === "u") mask ^= 1 << 4;
+
+    if (m.has(mask)) {
+      maxLength = Math.max(maxLength, i - m.get(mask));
+    } else {
+      m.set(mask, i);
+    }
+  }
+
+  return maxLength;
+};
+
+console.log(findTheLongestSubstring("eleee"));
