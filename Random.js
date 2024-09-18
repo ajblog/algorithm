@@ -867,4 +867,30 @@ var findTheLongestSubstring = function (s) {
   return maxLength;
 };
 
-console.log(findTheLongestSubstring("eleee"));
+// console.log(findTheLongestSubstring("eleee"));
+
+// Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.
+
+// Since the result may be very large, so you need to return a string instead of an integer.
+
+// Example 1:
+
+// Input: nums = [10,2]
+// Output: "210"
+// Example 2:
+
+// Input: nums = [3,30,34,5,9]
+// Output: "9534330"
+function largestNumber(nums) {
+  // Convert the numbers to strings for comparison
+  nums = nums.map(String);
+
+  // Sort the numbers using a custom comparator
+  nums.sort((a, b) => b + a - (a + b));
+
+  // Join the sorted numbers
+  let result = nums.join("");
+
+  // Handle the case where the result is multiple zeros
+  return result[0] === "0" ? "0" : result;
+}
