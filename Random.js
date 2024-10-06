@@ -866,3 +866,48 @@ var findTheLongestSubstring = function (s) {
 
   return maxLength;
 };
+
+// There is a malfunctioning keyboard where some letter keys do not work. All other keys on the keyboard work properly.
+
+// Given a string text of words separated by a single space (no leading or trailing spaces) and a string brokenLetters of all distinct letter keys that are broken, return the number of words in text you can fully type using this keyboard.
+
+// Example 1:
+
+// Input: text = "hello world", brokenLetters = "ad"
+// Output: 1
+// Explanation: We cannot type "world" because the 'd' key is broken.
+/**
+ * @param {string} text
+ * @param {string} brokenLetters
+ * @return {number}
+ */
+var canBeTypedWords = function (text, brokenLetters) {
+  // Split the text into words
+  let words = text.split(" ");
+
+  // Create a set for broken letters for O(1) lookup time
+  let brokenSet = new Set(brokenLetters);
+
+  // Initialize count for words that can be typed
+  let count = 0;
+
+  // Loop through each word
+  for (let word of words) {
+    let canType = true;
+
+    // Check each character of the word
+    for (let char of word) {
+      if (brokenSet.has(char)) {
+        canType = false;
+        break; // If broken letter is found, no need to check further
+      }
+    }
+
+    // If the word can be typed, increment the count
+    if (canType) {
+      count++;
+    }
+  }
+
+  return count;
+};
