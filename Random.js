@@ -911,3 +911,62 @@ var canBeTypedWords = function (text, brokenLetters) {
 
   return count;
 };
+
+// Given a string s, return true if the s can be palindrome after deleting at most one character from it.
+
+// Example 1:
+
+// Input: s = "aba"
+// Output: true
+// Example 2:
+
+// Input: s = "abca"
+// Output: true
+// Explanation: You could delete the character 'c'.
+// Example 3:
+
+// Input: s = "abc"
+// Output: false
+var validPalindrome = function (s) {
+  // Helper function to check if a substring is a palindrome
+  function isPalindrome(s, left, right) {
+    while (left < right) {
+      if (s[left] !== s[right]) {
+        return false;
+      }
+      left++;
+      right--;
+    }
+    return true;
+  }
+
+  let left = 0;
+  let right = s.length - 1;
+
+  while (left < right) {
+    // If characters don't match, check if skipping one of them results in a palindrome
+    if (s[left] !== s[right]) {
+      // Check by skipping the left character or the right character
+      return (
+        isPalindrome(s, left + 1, right) || isPalindrome(s, left, right - 1)
+      );
+    }
+    left++;
+    right--;
+  }
+
+  // If no mismatches, it's already a palindrome
+  return true;
+};
+
+// Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
+
+// k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.
+
+// You may not alter the values in the list's nodes, only nodes themselves may be changed.
+
+// Example 1:
+
+// Input: head = [1,2,3,4,5], k = 2
+// Output: [2,1,4,3,5]
+var reverseKGroup = function (head, k) {};
