@@ -959,14 +959,43 @@ var validPalindrome = function (s) {
   return true;
 };
 
-// Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
+// You are given an integer array nums. A subsequence of nums is called a square streak if:
 
-// k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.
+// The length of the subsequence is at least 2, and
+// after sorting the subsequence, each element (except the first element) is the square of the previous number.
+// Return the length of the longest square streak in nums, or return -1 if there is no square streak.
 
-// You may not alter the values in the list's nodes, only nodes themselves may be changed.
+// A subsequence is an array that can be derived from another array by deleting some or no elements without changing the order of the remaining elements.
 
 // Example 1:
 
-// Input: head = [1,2,3,4,5], k = 2
-// Output: [2,1,4,3,5]
-var reverseKGroup = function (head, k) {};
+// Input: nums = [4,3,6,16,8,2]
+// Output: 3
+// Explanation: Choose the subsequence [4,16,2]. After sorting it, it becomes [2,4,16].
+// - 4 = 2 * 2.
+// - 16 = 4 * 4.
+// Therefore, [4,16,2] is a square streak.
+// It can be shown that every subsequence of length 4 is not a square streak.
+// Example 2:
+
+// Input: nums = [2,3,5,6,7]
+// Output: -1
+// Explanation: There is no square streak in nums so return -1.
+
+var longestSquareStreak = function (nums) {
+  const hashMap = new Map(); // Initialize the hash map
+  const sortedArr = nums.sort((a, b) => a - b);
+  sortedArr.forEach((item) => {
+    if (hashMap.has(Math.sqrt(item))) {
+      hashMap.set(item, hashMap.get(Math.sqrt(item)) + 1);
+    } else {
+      hashMap.set(item, 0);
+    }
+  });
+  const maxValue = Math.max(...hashMap.values());
+
+  if (!maxValue) return -1;
+  return maxValue + 1;
+};
+
+console.log(longestSquareStreak([4, 3, 6, 16, 8, 2]));
