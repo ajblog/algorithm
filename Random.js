@@ -994,3 +994,22 @@ var reverseKGroup = function (head, k) {
 
   return allAns[0];
 };
+
+var makeFancyString = function (s) {
+  let sArray = s.split("");
+  let ans = [sArray[0]];
+  let curSimilarCount = 1;
+  for (let i = 1; i < sArray.length; i++) {
+    if (sArray[i] === sArray[i - 1]) {
+      curSimilarCount++;
+      if (curSimilarCount === 3) curSimilarCount--;
+      else {
+        ans.push(sArray[i]);
+      }
+    } else {
+      curSimilarCount = 1;
+      ans.push(sArray[i]);
+    }
+  }
+  return ans.join("");
+};
