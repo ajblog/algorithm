@@ -969,4 +969,26 @@ var validPalindrome = function (s) {
 
 // Input: head = [1,2,3,4,5], k = 2
 // Output: [2,1,4,3,5]
-var reverseKGroup = function (head, k) {};
+var reverseKGroup = function (head, k) {
+  let allAns = [];
+  let items = [];
+  while (!!head) {
+    if (items.length === k) {
+      allAns = allAns.concat([...items].reverse());
+      items = [];
+    }
+    items.push(head);
+    head = head.next;
+  }
+  if (items.length < k) {
+    allAns = allAns.concat(items); // Do not reverse incomplete group
+  } else {
+    allAns = allAns.concat([...items].reverse()); // Otherwise reverse them
+  }
+  for (let i = 0; i < allAns.length; i++) {
+    allAns[i].next = allAns[i + 1];
+    if (i === allAns.length - 1) allAns[i].next = undefined;
+  }
+
+  return allAns[0];
+};
