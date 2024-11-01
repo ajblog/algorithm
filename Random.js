@@ -959,11 +959,13 @@ var validPalindrome = function (s) {
   return true;
 };
 
-// Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
+// You are given an integer array nums. A subsequence of nums is called a square streak if:
 
-// k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.
+// The length of the subsequence is at least 2, and
+// after sorting the subsequence, each element (except the first element) is the square of the previous number.
+// Return the length of the longest square streak in nums, or return -1 if there is no square streak.
 
-// You may not alter the values in the list's nodes, only nodes themselves may be changed.
+// A subsequence is an array that can be derived from another array by deleting some or no elements without changing the order of the remaining elements.
 
 // Example 1:
 
