@@ -66,3 +66,47 @@ function buildTree(preorder, inorder) {
 
   return root;
 }
+
+// Given the root of a binary tree, return the number of nodes where the value of the node is equal to the average of the values in its subtree.
+
+// Note:
+
+// The average of n elements is the sum of the n elements divided by n and rounded down to the nearest integer.
+// A subtree of root is a tree consisting of root and all of its descendants.
+var averageOfSubtree = function (root) {
+  // Initialize a counter to keep track of nodes that meet the condition
+  let count = 0;
+
+  // Helper function to calculate the sum and count of nodes in a subtree
+  function dfs(node) {
+    if (!node) {
+      // If the node is null, return [sum, count] as [0, 0]
+      return [0, 0];
+    }
+
+    // Recursively calculate the sum and count for left and right subtrees
+    const [leftSum, leftCount] = dfs(node.left);
+    const [rightSum, rightCount] = dfs(node.right);
+
+    // Calculate the current sum and count
+    const currentSum = leftSum + rightSum + node.val;
+    const currentCount = leftCount + rightCount + 1;
+
+    // Calculate the average of the subtree
+    const average = Math.floor(currentSum / currentCount);
+
+    // Check if the node's value matches the average
+    if (node.val === average) {
+      count++;
+    }
+
+    // Return the sum and count for the current subtree
+    return [currentSum, currentCount];
+  }
+
+  // Start DFS traversal from the root
+  dfs(root);
+
+  // Return the final count of nodes that meet the condition
+  return count;
+};
