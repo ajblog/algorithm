@@ -1132,4 +1132,126 @@ var maxAscendingSum = function (nums) {
   return maxSum;
 };
 
-console.log(maxAscendingSum([12, 17, 15, 13, 10, 11, 12]));
+// Given two strings s and part, perform the following operation on s until all occurrences of the substring part are removed:
+
+// Find the leftmost occurrence of the substring part and remove it from s.
+// Return s after removing all occurrences of part.
+
+// A substring is a contiguous sequence of characters in a string.
+
+// Example 1:
+
+// Input: s = "daabcbaabcbc", part = "abc"
+// Output: "dab"
+// Explanation: The following operations are done:
+// - s = "daabcbaabcbc", remove "abc" starting at index 2, so s = "dabaabcbc".
+// - s = "dabaabcbc", remove "abc" starting at index 4, so s = "dababc".
+// - s = "dababc", remove "abc" starting at index 3, so s = "dab".
+// Now s has no occurrences of "abc".
+// Example 2:
+
+// Input: s = "axxxxyyyyb", part = "xy"
+// Output: "ab"
+// Explanation: The following operations are done:
+// - s = "axxxxyyyyb", remove "xy" starting at index 4 so s = "axxxyyyb".
+// - s = "axxxyyyb", remove "xy" starting at index 3 so s = "axxyyb".
+// - s = "axxyyb", remove "xy" starting at index 2 so s = "axyb".
+// - s = "axyb", remove "xy" starting at index 1 so s = "ab".
+// Now s has no occurrences of "xy".
+
+// Constraints:
+
+// 1 <= s.length <= 1000
+// 1 <= part.length <= 1000
+// s​​​​​​ and part consists of lowercase English letters.
+
+function removeOccurrences(s, part) {
+  let stack = [];
+  let partLength = part.length;
+
+  for (let char of s) {
+    stack.push(char); // Add character to stack
+
+    // Check if the last characters in the stack match `part`
+    if (
+      stack.length >= partLength &&
+      stack.slice(-partLength).join("") === part
+    ) {
+      stack.length -= partLength; // Remove last `partLength` characters
+    }
+  }
+
+  return stack.join(""); // Convert stack back to string
+}
+
+// // Example test cases
+// console.log(removeOccurrences("daabcbaabcbc", "abc")); // Output: "dab"
+// console.log(removeOccurrences("axxxxyyyyb", "xy")); // Output: "ab"
+
+// Given an integer array nums sorted in non-decreasing order, remove some duplicates in-place such that each unique element appears at most twice. The relative order of the elements should be kept the same.
+
+// Since it is impossible to change the length of the array in some languages, you must instead have the result be placed in the first part of the array nums. More formally, if there are k elements after removing the duplicates, then the first k elements of nums should hold the final result. It does not matter what you leave beyond the first k elements.
+
+// Return k after placing the final result in the first k slots of nums.
+
+// Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
+
+// Custom Judge:
+
+// The judge will test your solution with the following code:
+
+// int[] nums = [...]; // Input array
+// int[] expectedNums = [...]; // The expected answer with correct length
+
+// int k = removeDuplicates(nums); // Calls your implementation
+
+// assert k == expectedNums.length;
+// for (int i = 0; i < k; i++) {
+//     assert nums[i] == expectedNums[i];
+// }
+// If all assertions pass, then your solution will be accepted.
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+function removeDuplicates(nums) {
+  let writeIndex = 0; // Where the next valid element should go
+
+  for (let num of nums) {
+    // Allow at most two occurrences
+    if (writeIndex < 2 || nums[writeIndex - 2] !== num) {
+      nums[writeIndex] = num;
+      writeIndex++;
+    }
+  }
+
+  return writeIndex; // Number of valid elements
+}
+
+// console.log(removeDuplicates([0, 0, 1, 1, 1, 1, 2, 3, 3]));
+// Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Let these two numbers be numbers[index1] and numbers[index2] where 1 <= index1 < index2 <= numbers.length.
+
+// Return the indices of the two numbers, index1 and index2, added by one as an integer array [index1, index2] of length 2.
+
+// The tests are generated such that there is exactly one solution. You may not use the same element twice.
+
+// Your solution must use only constant extra space.
+/**
+ * @param {number[]} numbers
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function (numbers, target) {
+  let start = 0;
+  let end = numbers.length - 1;
+  let result = numbers[start] + numbers[end];
+  while (result !== target) {
+    if (result >= target) end -= 1;
+    else start += 1;
+    result = numbers[start] + numbers[end];
+  }
+  return [start + 1, end + 1];
+};
+
+console.log(twoSum([2, 3, 4], 6));
