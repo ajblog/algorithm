@@ -203,16 +203,16 @@ function findOptimumJobsSchedule(jobsArr) {
   });
   return finalResult;
 }
-console.log(
-  findOptimumJobsSchedule([
-    { start: 1, end: 3, profit: 50 },
-    { start: 2, end: 5, profit: 20 },
-    { start: 4, end: 6, profit: 70 },
-    { start: 6, end: 7, profit: 60 },
-    { start: 5, end: 8, profit: 30 },
-    { start: 7, end: 9, profit: 40 },
-  ])
-);
+// console.log(
+//   findOptimumJobsSchedule([
+//     { start: 1, end: 3, profit: 50 },
+//     { start: 2, end: 5, profit: 20 },
+//     { start: 4, end: 6, profit: 70 },
+//     { start: 6, end: 7, profit: 60 },
+//     { start: 5, end: 8, profit: 30 },
+//     { start: 7, end: 9, profit: 40 },
+//   ])
+// );
 
 // Assume you are an awesome parent and want to give your children some cookies. But, you should give each child at most one cookie.
 
@@ -248,4 +248,81 @@ function findContentChildren(g, s) {
   return i;
 }
 
-console.log(findContentChildren([1, 2], [1, 10, 2]));
+// console.log(findContentChildren([1, 2], [1, 10, 2]));
+// There are some spherical balloons taped onto a flat wall that represents the XY-plane. The balloons are represented as a 2D integer array points where points[i] = [xstart, xend] denotes a balloon whose horizontal diameter stretches between xstart and xend. You do not know the exact y-coordinates of the balloons.
+
+// Arrows can be shot up directly vertically (in the positive y-direction) from different points along the x-axis. A balloon with xstart and xend is burst by an arrow shot at x if xstart <= x <= xend. There is no limit to the number of arrows that can be shot. A shot arrow keeps traveling up infinitely, bursting any balloons in its path.
+
+// Given the array points, return the minimum number of arrows that must be shot to burst all balloons.
+
+// Example 1:
+
+// Input: points = [[10,16],[2,8],[1,6],[7,12]]
+// Output: 2
+// Explanation: The balloons can be burst by 2 arrows:
+// - Shoot an arrow at x = 6, bursting the balloons [2,8] and [1,6].
+// - Shoot an arrow at x = 11, bursting the balloons [10,16] and [7,12].
+/**
+ * @param {number[][]} points
+ * @return {number}
+ */
+var findMinArrowShots = function (points) {
+  if (!points.length) return 0;
+
+  // Sort balloons by their ending coordinate
+  points.sort((a, b) => a[1] - b[1]);
+
+  let arrows = 1;
+  let arrowPos = points[0][1]; // First arrow at the end of the first balloon
+
+  for (let [xStart, xEnd] of points) {
+    // If the balloon starts after the last shot arrow, we need a new arrow
+    if (xStart > arrowPos) {
+      arrows++;
+      arrowPos = xEnd; // Update arrow position
+    }
+  }
+
+  return arrows;
+};
+
+// Example usage
+// console.log(
+//   findMinArrowShots([
+//     [10, 16],
+//     [2, 8],
+//     [1, 6],
+//     [7, 12],
+//   ])
+// ); // Output: 2
+// Given an integer array nums of 2n integers, group these integers into n pairs (a1, b1), (a2, b2), ..., (an, bn) such that the sum of min(ai, bi) for all i is maximized. Return the maximized sum.
+
+// Example 1:
+
+// Input: nums = [1,4,3,2]
+// Output: 4
+// Explanation: All possible pairings (ignoring the ordering of elements) are:
+// 1. (1, 4), (2, 3) -> min(1, 4) + min(2, 3) = 1 + 2 = 3
+// 2. (1, 3), (2, 4) -> min(1, 3) + min(2, 4) = 1 + 2 = 3
+// 3. (1, 2), (3, 4) -> min(1, 2) + min(3, 4) = 1 + 3 = 4
+// So the maximum possible sum is 4.
+// Example 2:
+
+// Input: nums = [6,2,6,5,1,2]
+// Output: 9
+// Explanation: The optimal pairing is (2, 1), (2, 5), (6, 6). min(2, 1) + min(2, 5) + min(6, 6) = 1 + 2 + 6 = 9.
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var arrayPairSum = function (nums) {
+  nums.sort((a, b) => a - b);
+  let ans = 0;
+  for (let i = 0; i < nums.length - 1; i = i + 2) {
+    console.log(ans);
+    ans += nums[i];
+  }
+  return ans;
+};
+
+console.log(arrayPairSum([6, 2, 6, 5, 1, 2]));
