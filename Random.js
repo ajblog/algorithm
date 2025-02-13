@@ -1311,3 +1311,4 @@ var maximumSum = function (nums) {
 // console.log(maximumSum([18, 43, 36, 13, 7])); // Output: 54 (18 + 36)
 
 // console.log(maximumSum([18, 43, 36, 13, 7]));
+//TESTING WITH NEW SSH CRED
