@@ -1363,5 +1363,4 @@ var countSubarrays = function (nums, k) {
   }
 
   return ans;
-  console.log("test");
 };
