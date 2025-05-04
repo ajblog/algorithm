@@ -50,4 +50,52 @@ var findNumbers = function (nums) {
   return ans;
 };
 
-console.log(findNumbers([12, 345, 2, 6, 7896]));
+// console.log(findNumbers([12, 345, 2, 6, 7896]));
+// Given a list of dominoes, dominoes[i] = [a, b] is equivalent to dominoes[j] = [c, d] if and only if either (a == c and b == d), or (a == d and b == c) - that is, one domino can be rotated to be equal to another domino.
+
+// Return the number of pairs (i, j) for which 0 <= i < j < dominoes.length, and dominoes[i] is equivalent to dominoes[j].
+
+// Example 1:
+
+// Input: dominoes = [[1,2],[2,1],[3,4],[5,6]]
+// Output: 1
+// Example 2:
+
+// Input: dominoes = [[1,2],[1,2],[1,1],[1,2],[2,2]]
+// Output: 3
+
+// Constraints:
+
+// 1 <= dominoes.length <= 4 * 104
+// dominoes[i].length == 2
+// 1 <= dominoes[i][j] <= 9
+/**
+ * @param {number[][]} dominoes
+ * @return {number}
+ */
+var numEquivDominoPairs = function (dominoes) {
+  let ans = 0;
+  let hashMap = new Map();
+  function sortedString(domino) {
+    let temp = [];
+    if (domino[0] >= domino[1]) {
+      temp.push(domino[1]);
+      temp.push(domino[0]);
+      return temp.join("");
+    } else {
+      temp.push(domino[0]);
+      temp.push(domino[1]);
+      return temp.join("");
+    }
+  }
+
+  dominoes = dominoes.map((item) => sortedString(item));
+  dominoes.forEach((domino) => {
+    if (hashMap.has(domino)) hashMap.set(domino, hashMap.get(domino) + 1);
+    else hashMap.set(domino, 1);
+  });
+  for (const [_key, value] of hashMap) {
+    if (value !== 1) ans += (value * (value - 1)) / 2;
+  }
+  return ans;
+};

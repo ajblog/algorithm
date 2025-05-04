@@ -110,3 +110,93 @@ var averageOfSubtree = function (root) {
   // Return the final count of nodes that meet the condition
   return count;
 };
+
+// Given an integer array nums where the elements are sorted in ascending order, convert it to a height-balanced binary search tree.
+
+// Example 1:
+
+// Input: nums = [-10,-3,0,5,9]
+// Output: [0,-3,9,-10,null,5]
+// Explanation: [0,-10,5,null,-3,null,9] is also accepted:
+
+// Example 2:
+
+// Input: nums = [1,3]
+// Output: [3,1]
+// Explanation: [1,null,3] and [3,1] are both height-balanced BSTs.
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {number[]} nums
+ * @return {TreeNode}
+ */
+var sortedArrayToBST = function (nums) {
+  const buildTree = (left, right) => {
+    if (left > right) return null;
+
+    const mid = Math.floor((left + right) / 2);
+    const node = new TreeNode(nums[mid]);
+
+    node.left = buildTree(left, mid - 1);
+    node.right = buildTree(mid + 1, right);
+
+    return node;
+  };
+
+  return buildTree(0, nums.length - 1);
+};
+
+// You are given the root of a binary tree containing digits from 0 to 9 only.
+
+// Each root-to-leaf path in the tree represents a number.
+
+// For example, the root-to-leaf path 1 -> 2 -> 3 represents the number 123.
+// Return the total sum of all root-to-leaf numbers. Test cases are generated so that the answer will fit in a 32-bit integer.
+
+// A leaf node is a node with no children.
+
+// Example 1:
+
+// Input: root = [1,2,3]
+// Output: 25
+// Explanation:
+// The root-to-leaf path 1->2 represents the number 12.
+// The root-to-leaf path 1->3 represents the number 13.
+// Therefore, sum = 12 + 13 = 25.
+// Example 2:
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var sumNumbers = function (root) {
+  function dfs(node, currentSum) {
+    if (!node) return 0;
+
+    currentSum = currentSum * 10 + node.val;
+
+    // If it's a leaf, return the final number
+    if (!node.left && !node.right) {
+      return currentSum;
+    }
+
+    // Otherwise, recurse down both subtrees
+    return dfs(node.left, currentSum) + dfs(node.right, currentSum);
+  }
+
+  return dfs(root, 0);
+};
