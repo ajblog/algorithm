@@ -1409,24 +1409,44 @@ var maxSubsequence = function (nums, k) {
   return topK.map((item) => item[0]);
 };
 
-// Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:
+// Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
 
-// 0 <= a, b, c, d < n
-// a, b, c, and d are distinct.
-// nums[a] + nums[b] + nums[c] + nums[d] == target
-// You may return the answer in any order.
+// You must write an algorithm with O(log n) runtime complexity.
 
 // Example 1:
 
-// Input: nums = [1,0,-1,0,-2,2], target = 0
-// Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+// Input: nums = [1,3,5,6], target = 5
+// Output: 2
 // Example 2:
 
-// Input: nums = [2,2,2,2,2], target = 8
-// Output: [[2,2,2,2]]
+// Input: nums = [1,3,5,6], target = 2
+// Output: 1
+// Example 3:
+
+// Input: nums = [1,3,5,6], target = 7
+// Output: 4
+
 /**
  * @param {number[]} nums
  * @param {number} target
- * @return {number[][]}
+ * @return {number}
  */
-var fourSum = function (nums, target) {};
+var searchInsert = function (nums, target) {
+  let start = 0;
+  let end = nums.length - 1;
+
+  while (start <= end) {
+    let mid = Math.floor((start + end) / 2);
+
+    if (nums[mid] === target) return mid;
+
+    if (nums[mid] < target) {
+      start = mid + 1;
+    } else {
+      end = mid - 1;
+    }
+  }
+
+  // start is the insertion position
+  return start;
+};
