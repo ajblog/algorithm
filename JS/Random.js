@@ -503,7 +503,7 @@ var getLucky = function (s, k) {
     s
       .split("")
       .map((char) => alphMap[char])
-      .join("")
+      .join(""),
   );
   let j = s.toString();
   for (let i = 0; i < k; i++) {
@@ -570,11 +570,11 @@ var maxIncreaseKeepingSkyline = function (grid) {
       fullSum +=
         Math.min(
           findMaxInRowsAndColumns(grid).maxInColumns[j],
-          findMaxInRowsAndColumns(grid).maxInRows[i]
+          findMaxInRowsAndColumns(grid).maxInRows[i],
         ) - grid[i][j];
       grid[i][j] = Math.min(
         findMaxInRowsAndColumns(grid).maxInColumns[j],
-        findMaxInRowsAndColumns(grid).maxInRows[i]
+        findMaxInRowsAndColumns(grid).maxInRows[i],
       );
     }
   }
@@ -1449,4 +1449,56 @@ var searchInsert = function (nums, target) {
 
   // start is the insertion position
   return start;
+};
+
+// Given a string s, find the length of the longest substring without duplicate characters.
+
+// Example 1:
+
+// Input: s = "abcabcbb"
+// Output: 3
+// Explanation: The answer is "abc", with the length of 3. Note that "bca" and "cab" are also correct answers.
+// Example 2:
+
+// Input: s = "bbbbb"
+// Output: 1
+// Explanation: The answer is "b", with the length of 1.
+// Example 3:
+
+// Input: s = "pwwkew"
+// Output: 3
+// Explanation: The answer is "wke", with the length of 3.
+// Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLongestSubstring = function (s) {
+  if (s.length === 0) return 0;
+
+  let maxLength = 0;
+  let left = 0;
+  let right = 0;
+  let charMap = new Map(); // Stores character and its latest index
+
+  while (right < s.length) {
+    const currentChar = s[right];
+
+    // If character exists in current window, move left pointer
+    if (charMap.has(currentChar) && charMap.get(currentChar) >= left) {
+      left = charMap.get(currentChar) + 1;
+    }
+
+    // Update character's latest position
+    charMap.set(currentChar, right);
+
+    // Calculate current window length
+    const currentLength = right - left + 1;
+    maxLength = Math.max(maxLength, currentLength);
+
+    // Expand window to the right
+    right++;
+  }
+
+  return maxLength;
 };
