@@ -1502,3 +1502,129 @@ var lengthOfLongestSubstring = function (s) {
 
   return maxLength;
 };
+
+// You are given an integer array nums and an integer k.
+
+// An integer x is almost missing from nums if x appears in exactly one subarray of size k within nums.
+
+// Return the largest almost missing integer from nums. If no such integer exists, return -1.
+
+// A subarray is a contiguous sequence of elements within an array.
+
+// Example 1:
+
+// Input: nums = [3,9,2,1,7], k = 3
+
+// Output: 7
+
+// Explanation:
+
+// 1 appears in 2 subarrays of size 3: [9, 2, 1] and [2, 1, 7].
+// 2 appears in 3 subarrays of size 3: [3, 9, 2], [9, 2, 1], [2, 1, 7].
+// 3 appears in 1 subarray of size 3: [3, 9, 2].
+// 7 appears in 1 subarray of size 3: [2, 1, 7].
+// 9 appears in 2 subarrays of size 3: [3, 9, 2], and [9, 2, 1].
+// We return 7 since it is the largest integer that appears in exactly one subarray of size k.
+
+// Example 2:
+
+// Input: nums = [3,9,7,2,1,7], k = 4
+
+// Output: 3
+
+// Explanation:
+
+// 1 appears in 2 subarrays of size 4: [9, 7, 2, 1], [7, 2, 1, 7].
+// 2 appears in 3 subarrays of size 4: [3, 9, 7, 2], [9, 7, 2, 1], [7, 2, 1, 7].
+// 3 appears in 1 subarray of size 4: [3, 9, 7, 2].
+// 7 appears in 3 subarrays of size 4: [3, 9, 7, 2], [9, 7, 2, 1], [7, 2, 1, 7].
+// 9 appears in 2 subarrays of size 4: [3, 9, 7, 2], [9, 7, 2, 1].
+// We return 3 since it is the largest and only integer that appears in exactly one subarray of size k.
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var largestInteger = function (nums, k) {
+  const map = new Map();
+  for (let i = 0; i < k; i++) {
+    if (!map.has(nums[i])) {
+      map.set(i, 1);
+    } else {
+      map.set(i, map.get(i) + 1);
+    }
+  }
+  let i = 1;
+  let j = k - 1;
+  let max = -1;
+  while (j < nums.length) {
+    if (!map.has(nums[i])) {
+      map.set(i, 1);
+    } else {
+      map.set(i, map.get(i) + 1);
+    }
+    if (!map.has(nums[j])) {
+      map.set(j, true);
+    } else {
+      map.set(j, map.get(j) + 1);
+    }
+    i++;
+    j++;
+  }
+  for (const [key, value] of map) {
+    if (key > max && value === 1) max = key;
+  }
+  return max;
+};
+
+// Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same.
+
+// Consider the number of unique elements in nums to be k​​​​​​​​​​​​​​. After removing duplicates, return the number of unique elements k.
+
+// The first k elements of nums should contain the unique numbers in sorted order. The remaining elements beyond index k - 1 can be ignored.
+
+// Custom Judge:
+
+// The judge will test your solution with the following code:
+
+// int[] nums = [...]; // Input array
+// int[] expectedNums = [...]; // The expected answer with correct length
+
+// int k = removeDuplicates(nums); // Calls your implementation
+
+// assert k == expectedNums.length;
+// for (int i = 0; i < k; i++) {
+//     assert nums[i] == expectedNums[i];
+// }
+// If all assertions pass, then your solution will be accepted.
+
+// Example 1:
+
+// Input: nums = [1,1,2]
+// Output: 2, nums = [1,2,_]
+// Explanation: Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively.
+// It does not matter what you leave beyond the returned k (hence they are underscores).
+// Example 2:
+
+// Input: nums = [0,0,1,1,1,2,2,3,3,4]
+// Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
+// Explanation: Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively.
+// It does not matter what you leave beyond the returned k (hence they are underscores).
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var removeDuplicates = function (nums) {
+  if (nums.length === 0) return 0;
+
+  let k = 1; // Pointer for position of unique elements
+
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] !== nums[i - 1]) {
+      nums[k] = nums[i]; // Place unique element at position k
+      k++;
+    }
+  }
+
+  return k;
+};
