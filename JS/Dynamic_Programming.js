@@ -149,7 +149,7 @@ function uniquePaths(m, n) {
 
 function maxPoints(points) {
   let dp = Array.from({ length: points.length }, () =>
-    Array(points[0].length).fill(0)
+    Array(points[0].length).fill(0),
   );
   for (let i = 0; i < points[0].length; i++) {
     dp[0][i] = points[0][i];
@@ -195,4 +195,32 @@ function minSteps(n) {
   }
 
   return dp[n];
+}
+
+// Given an integer numRows, return the first numRows of Pascal's triangle.
+
+// In Pascal's triangle, each number is the sum of the two numbers directly above it as shown:
+
+// Example 1:
+
+// Input: numRows = 5
+// Output: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+// Example 2:
+
+// Input: numRows = 1
+// Output: [[1]]
+function generate(numRows) {
+  const dp = [];
+
+  for (let i = 0; i < numRows; i++) {
+    const row = new Array(i + 1).fill(1);
+
+    for (let j = 1; j < i; j++) {
+      row[j] = dp[i - 1][j - 1] + dp[i - 1][j];
+    }
+
+    dp.push(row);
+  }
+
+  return dp;
 }
