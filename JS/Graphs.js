@@ -57,11 +57,11 @@ function buildTree(preorder, inorder) {
   // Recursively build the left and right subtrees
   root.left = buildTree(
     preorder.slice(1, rootIndex + 1),
-    inorder.slice(0, rootIndex)
+    inorder.slice(0, rootIndex),
   );
   root.right = buildTree(
     preorder.slice(rootIndex + 1),
-    inorder.slice(rootIndex + 1)
+    inorder.slice(rootIndex + 1),
   );
 
   return root;
@@ -290,4 +290,45 @@ var binaryTreePaths = function (root) {
   };
   dfs(root, stringInit);
   return ans;
+};
+
+// Given the root of a complete binary tree, return the number of the nodes in the tree.
+
+// According to Wikipedia, every level, except possibly the last, is completely filled in a complete binary tree, and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.
+
+// Design an algorithm that runs in less than O(n) time complexity.
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var countNodes = function (root) {
+  if (!root) return 0;
+
+  const getHeight = (node) => {
+    let h = 0;
+    while (node) {
+      h++;
+      node = node.left;
+    }
+    return h;
+  };
+
+  const leftH = getHeight(root.left);
+  const rightH = getHeight(root.right);
+
+  if (leftH === rightH) {
+    // left subtree is perfect → 2^leftH - 1 nodes + root + right subtree
+    return (1 << leftH) + countNodes(root.right);
+  } else {
+    // right subtree is perfect → 2^rightH - 1 nodes + root + left subtree
+    return (1 << rightH) + countNodes(root.left);
+  }
 };
