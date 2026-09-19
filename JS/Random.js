@@ -1730,3 +1730,46 @@ MyQueue.prototype.move = function () {
  * var param_3 = obj.peek()
  * var param_4 = obj.empty()
  */
+// You are given an array of digits called digits. Your task is to determine the number of distinct three-digit even numbers that can be formed using these digits.
+
+// Note: Each copy of a digit can only be used once per number, and there may not be leading zeros.
+
+// Example 1:
+
+// Input: digits = [1,2,3,4]
+
+// Output: 12
+
+// Explanation: The 12 distinct 3-digit even numbers that can be formed are 124, 132, 134, 142, 214, 234, 312, 314, 324, 342, 412, and 432. Note that 222 cannot be formed because there is only 1 copy of the digit 2.
+
+// Example 2:
+
+// Input: digits = [0,2,2]
+
+// Output: 2
+
+// Explanation: The only 3-digit even numbers that can be formed are 202 and 220. Note that the digit 2 can be used twice because it appears twice in the array.
+/**
+ * @param {number[]} digits
+ * @return {number}
+ */
+var totalNumbers = function (digits) {
+  const uniqueNumbers = new Set();
+
+  for (let i = 0; i < digits.length; i++) {
+    for (let j = 0; j < digits.length; j++) {
+      for (let k = 0; k < digits.length; k++) {
+        // Ensure all indices are different
+        if (i !== j && j !== k && i !== k) {
+          const num = digits[i] * 100 + digits[j] * 10 + digits[k];
+          // Check if the number is even and does not have a leading zero
+          if (num >= 100 && num % 2 === 0) {
+            uniqueNumbers.add(num);
+          }
+        }
+      }
+    }
+  }
+
+  return uniqueNumbers.size;
+};
