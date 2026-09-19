@@ -213,3 +213,47 @@ var missingMultiple = function (nums, k) {
   }
   return i * k;
 };
+
+// You are given a circle represented as (radius, xCenter, yCenter) and an axis-aligned rectangle represented as (x1, y1, x2, y2), where (x1, y1) are the coordinates of the bottom-left corner, and (x2, y2) are the coordinates of the top-right corner of the rectangle.
+
+// Return true if the circle and rectangle are overlapped otherwise return false. In other words, check if there is any point (xi, yi) that belongs to the circle and the rectangle at the same time.
+
+/**
+ * @param {number} radius
+ * @param {number} xCenter
+ * @param {number} yCenter
+ * @param {number} x1
+ * @param {number} y1
+ * @param {number} x2
+ * @param {number} y2
+ * @return {boolean}
+ */
+function checkOverlap(radius, xCenter, yCenter, x1, y1, x2, y2) {
+  let closestX = xCenter;
+  let closestY = yCenter;
+
+  // Circle is to the left of the rectangle
+  if (xCenter < x1) {
+    closestX = x1;
+  }
+  // Circle is to the right of the rectangle
+  else if (xCenter > x2) {
+    closestX = x2;
+  }
+
+  // Circle is below the rectangle
+  if (yCenter < y1) {
+    closestY = y1;
+  }
+  // Circle is above the rectangle
+  else if (yCenter > y2) {
+    closestY = y2;
+  }
+
+  const distanceX = xCenter - closestX;
+  const distanceY = yCenter - closestY;
+
+  return distanceX ** 2 + distanceY ** 2 <= radius ** 2;
+}
+
+console.log("overlap:", checkOverlap(1, 1, 1, 1, -3, 2, -1));
