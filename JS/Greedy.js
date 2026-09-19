@@ -489,12 +489,13 @@ function sumGame(num) {
     }
   }
 
-  // Odd number of '?' means Alice gets one extra move
-  if ((leftQuestions + rightQuestions) % 2 === 1) {
+  const totalQuestions = leftQuestions + rightQuestions;
+
+  if (totalQuestions % 2 === 1) {
     return true;
   }
 
-  const questionDifference = Math.abs(leftQuestions - rightQuestions);
+  const targetDifference = ((rightQuestions - leftQuestions) * 9) / 2;
 
-  return Math.abs(difference) !== (questionDifference / 2) * 9;
+  return difference !== targetDifference;
 }
