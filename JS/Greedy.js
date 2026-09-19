@@ -450,3 +450,51 @@ function maxProfit(prices, fee) {
 
   return profit;
 }
+
+// Alice and Bob take turns playing a game, with Alice starting first.
+
+// You are given a string num of even length consisting of digits and '?' characters. On each turn, a player will do the following if there is still at least one '?' in num:
+
+// Choose an index i where num[i] == '?'.
+// Replace num[i] with any digit between '0' and '9'.
+// The game ends when there are no more '?' characters in num.
+
+// For Bob to win, the sum of the digits in the first half of num must be equal to the sum of the digits in the second half. For Alice to win, the sums must not be equal.
+
+// For example, if the game ended with num = "243801", then Bob wins because 2+4+3 = 8+0+1. If the game ended with num = "243803", then Alice wins because 2+4+3 != 8+0+3.
+// Assuming Alice and Bob play optimally, return true if Alice will win and false if Bob will win.
+
+function sumGame(num) {
+  const half = num.length / 2;
+
+  let difference = 0;
+  let leftQuestions = 0;
+  let rightQuestions = 0;
+
+  for (let i = 0; i < num.length; i++) {
+    if (num[i] === "?") {
+      if (i < half) {
+        leftQuestions++;
+      } else {
+        rightQuestions++;
+      }
+    } else {
+      const digit = Number(num[i]);
+
+      if (i < half) {
+        difference += digit;
+      } else {
+        difference -= digit;
+      }
+    }
+  }
+
+  // Odd number of '?' means Alice gets one extra move
+  if ((leftQuestions + rightQuestions) % 2 === 1) {
+    return true;
+  }
+
+  const questionDifference = Math.abs(leftQuestions - rightQuestions);
+
+  return Math.abs(difference) !== (questionDifference / 2) * 9;
+}
