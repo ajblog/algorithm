@@ -1837,3 +1837,125 @@ var evaluate = function (s, knowledge) {
   }
   return builtStr;
 };
+
+// We have two special characters:
+
+// The first character can be represented by one bit 0.
+// The second character can be represented by two bits (10 or 11).
+// Given a binary array bits that ends with 0, return true if the last character must be a one-bit character.
+
+// Example 1:
+
+// Input: bits = [1,0,0]
+// Output: true
+// Explanation: The only way to decode it is two-bit character and one-bit character.
+// So the last character is one-bit character.
+// Example 2:
+
+// Input: bits = [1,1,1,0]
+// Output: false
+// Explanation: The only way to decode it is two-bit character and two-bit character.
+// So the last character is not one-bit character.
+
+// Constraints:
+
+// 1 <= bits.length <= 1000
+// bits[i] is either 0 or 1.
+/**
+ * @param {number[]} bits
+ * @return {boolean}
+ */
+var isOneBitCharacter = function (bits) {
+  if (bits.length === 1) return true;
+  else if (bits.length === 2 && bits[0] === 1) return false;
+  else if (bits.length === 2 && bits[0] === 0) return true;
+  let length = bits.length;
+  for (let i = 0; i <= bits.length - 2; i++) {
+    if (bits[i] === 1) {
+      length -= 2;
+      i += 1;
+    } else {
+      if (bits[i] === 0) {
+        length -= 1;
+      }
+    }
+  }
+  return length === 1;
+};
+
+// You are part of a university admissions office and need to keep track of the kth highest test score from applicants in real-time. This helps to determine cut-off marks for interviews and admissions dynamically as new applicants submit their scores.
+
+// You are tasked to implement a class which, for a given integer k, maintains a stream of test scores and continuously returns the kth highest test score after a new score has been submitted. More specifically, we are looking for the kth highest score in the sorted list of all scores.
+
+// Implement the KthLargest class:
+
+// KthLargest(int k, int[] nums) Initializes the object with the integer k and the stream of test scores nums.
+// int add(int val) Adds a new test score val to the stream and returns the element representing the kth largest element in the pool of test scores so far.
+
+// Example 1:
+
+// Input:
+// ["KthLargest", "add", "add", "add", "add", "add"]
+
+// [[3, [4, 5, 8, 2]], [3], [5], [10], [9], [4]]
+
+// Output: [null, 4, 5, 5, 8, 8]
+
+// Explanation:
+
+// KthLargest kthLargest = new KthLargest(3, [4, 5, 8, 2]);
+// kthLargest.add(3); // return 4
+// kthLargest.add(5); // return 5
+// kthLargest.add(10); // return 5
+// kthLargest.add(9); // return 8
+// kthLargest.add(4); // return 8
+
+// Example 2:
+
+// Input:
+// ["KthLargest", "add", "add", "add", "add"]
+
+// [[4, [7, 7, 7, 7, 8, 3]], [2], [10], [9], [9]]
+
+// Output: [null, 7, 7, 7, 8]
+
+// Explanation:
+
+// KthLargest kthLargest = new KthLargest(4, [7, 7, 7, 7, 8, 3]);
+// kthLargest.add(2); // return 7
+// kthLargest.add(10); // return 7
+// kthLargest.add(9); // return 7
+// kthLargest.add(9); // return 8
+/**
+ * @param {number} k
+ * @param {number[]} nums
+ */
+
+var KthLargest = function (k, nums) {
+  this.k = k;
+  this.nums = nums.sort((a, b) => b - a); // Sort in descending order
+};
+
+/**
+ * @param {number} val
+ * @return {number}
+ */
+KthLargest.prototype.add = function (val) {
+  let newNums = [];
+  let hasValBeenAdded = false;
+  if (this.nums.length === 0) {
+    this.nums.push(val);
+  }
+  this.nums.forEach((item) => {
+    if (!hasValBeenAdded && val >= item) {
+      newNums.push(val);
+      hasValBeenAdded = true;
+    }
+    newNums.push(item);
+  });
+  if (!hasValBeenAdded) {
+    newNums.push(val);
+  }
+  this.nums = newNums;
+  return this.nums[this.k - 1];
+};
